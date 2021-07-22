@@ -1,0 +1,16 @@
+# [PARTICLE TYPES]
+#
+# firework
+# crit
+# dragon
+# flame
+# enchant
+
+# Permission node: tpx.show
+particle:
+  type: "firework"
+  teleport_delay: 5
+
+  # move message
+lang:
+  teleportation: "Do not move, you will teleport in 5 seconds."

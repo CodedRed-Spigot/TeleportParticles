@@ -1,0 +1,8 @@
+name: TeleportX
+version: ${project.version}
+main: me.codedred.teleportx.TeleportX
+api-version: 1.17
+loadbefore: [ EssentialsX ]
+authors: [ CodedRed ]
+description: A custom particle effect when teleporting
+website: https://github.com/CodedRed-Spigot
