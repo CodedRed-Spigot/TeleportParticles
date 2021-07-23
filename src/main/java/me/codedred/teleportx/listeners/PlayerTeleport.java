@@ -2,7 +2,7 @@ package me.codedred.teleportx.listeners;
 
 import me.codedred.teleportx.TeleportX;
 import me.codedred.teleportx.data.DataManager;
-import me.codedred.teleportx.enums.ParticleType;
+import me.codedred.teleportx.managers.TPManager;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Particle;
@@ -25,10 +25,21 @@ public class PlayerTeleport implements Listener {
 
         Player player = event.getPlayer();
         DataManager data = DataManager.getInstance();
+        TPManager tp = TPManager.getInstance();
 
-        Particle particle = ParticleType.valueOf(data.getConfig().getString("particle.type").toUpperCase()).getParticle();
-        int teleport_delay = data.getConfig().getInt("particle.teleport_delay");
-        String teleportation_message = data.getConfig().getString("lang.teleportation");
+        if (tp.isActive(player.getUniqueId())) {
+            player.sendMessage(ChatColor.translateAlternateColorCodes(
+                    '&', data.getConfig().getString("messages.already-teleporting")));
+            return;
+        }
+
+        tp.setActive(player.getUniqueId(), true);
+        Particle particle = tp.getParticle();
+        int teleport_delay = tp.getDelay();
+        if (data.getConfig().getBoolean("messages.send_teleportation_msg"))
+            player.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                    data.getConfig().getString("messages.teleportation_msg").replace("%delay%", Integer.toString(teleport_delay))));
+        String teleportation_canceled = data.getConfig().getString("messages.teleportation_canceled").replace("%delay%", Integer.toString(teleport_delay));
 
         new BukkitRunnable() {
             final Location loc = player.getLocation();
@@ -38,7 +49,8 @@ public class PlayerTeleport implements Listener {
 
             public void run() {
                 if (player.getLocation().distanceSquared(loc) > 0.0) {
-                    player.sendMessage(ChatColor.translateAlternateColorCodes('&', teleportation_message));
+                    player.sendMessage(ChatColor.translateAlternateColorCodes('&', teleportation_canceled));
+                    tp.setActive(player.getUniqueId(), false);
                     cancel();
                     return;
                 }
@@ -58,6 +70,7 @@ public class PlayerTeleport implements Listener {
                     Location destination = event.getTo();
                     destination.setDirection(direction);
                     player.teleport(destination);
+                    tp.setActive(player.getUniqueId(), false);
                     cancel();
                 }
             }

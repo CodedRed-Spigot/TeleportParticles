@@ -21,4 +21,9 @@ public class DataManager {
     public void reloadConfig() {
         config.reloadConfig();
     }
+
+    public void saveConfig() {
+        config.saveConfig();
+    }
+
 }

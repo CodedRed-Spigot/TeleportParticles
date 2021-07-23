@@ -1,16 +1,9 @@
-# [PARTICLE TYPES]
-#
-# firework
-# crit
-# dragon
-# flame
-# enchant
-
-# Permission node: tpx.show
-particle:
-  type: "firework"
-  teleport_delay: 5
-
-  # move message
-lang:
-  teleportation: "Do not move, you will teleport in 5 seconds."
+# Plugin by CodedRed
+particle_type: FIREWORKS_SPARK
+teleportation_delay: 5
+messages:
+  send_teleportation_msg: true
+  teleportation_msg: "&aDo not move, you will teleport in &l%delay% &aseconds."
+  no_permission: "&cYou do not have permission to do this!"
+  already-teleporting: "&cYou are already teleporting!"
+  teleportation_canceled: "&cTeleportation has been canceled."
